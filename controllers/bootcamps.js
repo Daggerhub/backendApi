@@ -1,12 +1,12 @@
+const ErrorResponse = require('../utils/errorResponse');
 const Bootcamp = require('../models/Bootcamp');
 
 exports.getBootcamps = async (req, res, next) => {
   try {
     const bootcamps = await Bootcamp.find();
-
     res.status(200).json({ success: true, data: bootcamps });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -14,11 +14,11 @@ exports.getBootcamp = async (req, res, next) => {
   try {
     const bootcamp = await Bootcamp.findById(req.params.id);
     if (!bootcamp) {
-      res.status(400).json({ success: false });
+      next(err);
     }
     res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -30,7 +30,7 @@ exports.createBootcamp = async (req, res, next) => {
       data: bootcamp
     });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -45,7 +45,7 @@ exports.updateBootcamp = async (req, res, next) => {
     }
     res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
-    return res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -57,6 +57,6 @@ exports.deleteBootcamp = async (req, res, next) => {
     }
     res.status(200).json({ success: true, data: {} });
   } catch (error) {
-    return res.status(400).json({ success: false });
+    next(error);
   }
 };
